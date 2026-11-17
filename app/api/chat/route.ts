@@ -2,6 +2,8 @@ import Anthropic from "@anthropic-ai/sdk";
 import { NextRequest, NextResponse } from "next/server";
 import { getSilkById } from "@/lib/silks";
 
+export const maxDuration = 30;
+
 const client = new Anthropic();
 
 export async function POST(req: NextRequest) {
