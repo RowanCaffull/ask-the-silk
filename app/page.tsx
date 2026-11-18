@@ -18,20 +18,16 @@ export default function Home() {
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     if (!selectedId || !question.trim() || loading) return;
-
     setLoading(true);
     setError("");
     setResponse("");
-
     try {
       const res = await fetch("/api/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ silkId: selectedId, question }),
       });
-
       const data = await res.json();
-
       if (!res.ok) {
         setError(data.error || "Something went wrong.");
       } else {
@@ -45,92 +41,87 @@ export default function Home() {
     }
   }
 
-  // Split into rows: 3 then 2
   const row1 = SILKS.filter((s) => s.photo).slice(0, 3);
   const row2 = SILKS.filter((s) => s.photo).slice(3);
 
   return (
-    <main className="min-h-screen bg-white">
+    <main className="min-h-screen" style={{ background: "linear-gradient(160deg, #0f1f4a 0%, #1b357a 50%, #0f1f4a 100%)" }}>
+
       {/* Header */}
-      <header className="bg-navy px-6 py-4 flex items-center justify-between">
-        <div className="flex items-center gap-2">
-          <span className="text-white font-bold text-xl tracking-tight">
-            36 <span className="text-family">Family</span>
-          </span>
-        </div>
-        <span className="text-white/40 text-xs uppercase tracking-widest hidden sm:block">
-          Ask the Silk
+      <header className="px-6 py-5 flex items-center justify-between border-b border-white/10">
+        <Image
+          src="/36family-logo.png"
+          alt="36 Family"
+          width={120}
+          height={36}
+          className="h-8 w-auto"
+        />
+        <span className="text-white/30 text-xs uppercase tracking-widest hidden sm:block">
+          Family Seminar 2024
         </span>
       </header>
 
-      {/* Hero banner */}
-      <div className="bg-gradient-to-br from-navy via-navy-light to-family py-12 px-6 text-center">
-        <h1 className="text-5xl sm:text-6xl font-bold text-white mb-3 tracking-tight">
+      {/* Hero */}
+      <div className="text-center px-6 pt-14 pb-10">
+        <div className="inline-block mb-4 px-4 py-1.5 rounded-full border border-family/40 bg-family/10 text-family text-xs font-semibold uppercase tracking-widest">
+          Family Seminar · Interactive
+        </div>
+        <h1 className="text-5xl sm:text-7xl font-bold text-white mb-4 tracking-tight">
           Ask the Silk
         </h1>
-        <p className="text-white/70 text-lg max-w-lg mx-auto">
-          Got a question? Our KCs are standing by.{" "}
-          <span className="italic">Sort of.</span>
+        <p className="text-white/50 text-lg max-w-md mx-auto">
+          Scan. Choose. Ask. Discover what a KC really thinks.{" "}
+          <span className="text-white/30 italic text-sm">(Probably.)</span>
         </p>
       </div>
 
-      <div className="max-w-3xl mx-auto px-6 py-10">
+      <div className="max-w-3xl mx-auto px-6 pb-16">
+
         {/* Disclaimer */}
-        <div className="mb-10 flex items-start gap-3 bg-family/10 border border-family/30 rounded-2xl px-5 py-4 text-sm text-navy/80">
-          <span className="text-lg mt-0.5">⚠️</span>
+        <div className="mb-10 flex items-start gap-3 bg-white/5 border border-white/10 rounded-2xl px-5 py-4 text-sm text-white/60">
+          <span className="text-family mt-0.5 shrink-0">⚠</span>
           <span>
-            <strong>Not legal advice. Not even close.</strong> This is a bit of
-            fun for our family seminar — each KC has been given a tongue-in-cheek
-            persona for comedy purposes. Nothing here reflects their actual views,
-            and none of it should influence any decision more important than what
-            to have for lunch.
+            <strong className="text-white/80">Not legal advice. Not even close.</strong>{" "}
+            Each KC has been given a tongue-in-cheek persona for comedy purposes.
+            Nothing here reflects their actual views. Please do not make life
+            decisions based on what Dexter thinks.
           </span>
         </div>
 
-        {/* Photo selector — 3 then 2 */}
+        {/* Photo selector */}
         <div className="mb-8">
-          <p className="text-sm font-semibold uppercase tracking-widest text-stone-400 mb-5 text-center">
+          <p className="text-xs font-semibold uppercase tracking-widest text-white/30 mb-6 text-center">
             Choose your silk
           </p>
 
           {/* Row 1 — 3 people */}
-          <div className="flex justify-center gap-4 sm:gap-6 mb-4 sm:mb-6">
+          <div className="flex justify-center gap-4 sm:gap-8 mb-4 sm:mb-6">
             {row1.map((silk) => (
               <SilkCard
                 key={silk.id}
                 silk={silk}
                 selected={selectedId === silk.id}
-                onSelect={() => {
-                  setSelectedId(silk.id);
-                  setResponse("");
-                  setError("");
-                }}
+                onSelect={() => { setSelectedId(silk.id); setResponse(""); setError(""); }}
               />
             ))}
           </div>
 
-          {/* Row 2 — 2 people, centred */}
-          <div className="flex justify-center gap-4 sm:gap-6">
+          {/* Row 2 — 2 people centred */}
+          <div className="flex justify-center gap-4 sm:gap-8">
             {row2.map((silk) => (
               <SilkCard
                 key={silk.id}
                 silk={silk}
                 selected={selectedId === silk.id}
-                onSelect={() => {
-                  setSelectedId(silk.id);
-                  setResponse("");
-                  setError("");
-                }}
+                onSelect={() => { setSelectedId(silk.id); setResponse(""); setError(""); }}
               />
             ))}
           </div>
 
-          {/* Persona description */}
+          {/* Persona */}
           {selectedSilk && (
-            <div className="mt-5 bg-navy/5 border border-navy/10 rounded-xl px-5 py-3 text-sm text-navy/70 italic text-center">
-              <strong className="not-italic text-navy">
-                {selectedSilk.name}:
-              </strong>{" "}
+            <div className="mt-6 bg-white/5 border border-family/20 rounded-xl px-5 py-3 text-sm text-white/60 italic text-center">
+              <strong className="not-italic text-family">{selectedSilk.name}:</strong>{" "}
               {selectedSilk.persona}
             </div>
           )}
@@ -139,7 +130,7 @@ export default function Home() {
         {/* Question form */}
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="block text-sm font-semibold uppercase tracking-widest text-stone-400 mb-1.5">
+            <label className="block text-xs font-semibold uppercase tracking-widest text-white/30 mb-2">
               Your question
             </label>
             <textarea
@@ -152,14 +143,20 @@ export default function Home() {
               }
               rows={4}
               disabled={!selectedId}
-              className="w-full bg-stone-50 border border-stone-200 rounded-xl px-4 py-3 text-navy placeholder-stone-400 focus:outline-none focus:ring-2 focus:ring-family focus:border-transparent resize-none transition disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full bg-white/5 border border-white/15 rounded-xl px-4 py-3 text-white placeholder-white/25 focus:outline-none focus:ring-2 focus:ring-family focus:border-transparent resize-none transition disabled:opacity-30 disabled:cursor-not-allowed"
             />
           </div>
 
           <button
             type="submit"
             disabled={loading || !selectedId || !question.trim()}
-            className="w-full bg-navy hover:bg-navy-light disabled:bg-stone-200 disabled:text-stone-400 text-white font-semibold py-3.5 px-6 rounded-xl transition-colors duration-150 tracking-wide text-sm"
+            className="w-full font-semibold py-4 px-6 rounded-xl transition-all duration-150 tracking-wide text-sm disabled:opacity-30 disabled:cursor-not-allowed"
+            style={{
+              background: loading || !selectedId || !question.trim()
+                ? "rgba(255,255,255,0.1)"
+                : "linear-gradient(135deg, #76cbd6, #4aa8b5)",
+              color: loading || !selectedId || !question.trim() ? "rgba(255,255,255,0.3)" : "#0f1f4a",
+            }}
           >
             {loading
               ? "Consulting the brief…"
@@ -171,7 +168,7 @@ export default function Home() {
 
         {/* Error */}
         {error && (
-          <div className="mt-6 p-4 bg-red-50 border border-red-200 rounded-xl text-red-600 text-sm">
+          <div className="mt-6 p-4 bg-red-900/30 border border-red-500/30 rounded-xl text-red-300 text-sm">
             {error}
           </div>
         )}
@@ -180,30 +177,27 @@ export default function Home() {
         {response && (
           <div className="mt-10">
             <div className="flex items-center gap-3 mb-5">
-              <div className="h-px flex-1 bg-stone-200" />
-              <span className="text-stone-400 text-xs font-semibold uppercase tracking-widest">
+              <div className="h-px flex-1 bg-white/10" />
+              <span className="text-family text-xs font-semibold uppercase tracking-widest">
                 {respondentName} responds
               </span>
-              <div className="h-px flex-1 bg-stone-200" />
+              <div className="h-px flex-1 bg-white/10" />
             </div>
-            <div className="bg-navy/[0.03] border border-navy/10 rounded-2xl p-7">
-              <div className="prose prose-navy max-w-none text-navy/90 prose-p:leading-relaxed prose-strong:text-navy prose-em:text-navy/80">
+            <div className="bg-white/5 border border-white/10 rounded-2xl p-7">
+              <div className="prose text-white/85 leading-relaxed">
                 <ReactMarkdown>{response}</ReactMarkdown>
               </div>
             </div>
-            <p className="mt-4 text-center text-xs text-stone-400 italic">
-              AI-generated in a fictional persona. Not the actual views of{" "}
-              {respondentName} or 36 Family.
+            <p className="mt-4 text-center text-xs text-white/25 italic">
+              AI-generated in a fictional persona. Not the actual views of {respondentName} or 36 Family.
             </p>
           </div>
         )}
       </div>
 
-      <footer className="mt-8 border-t border-stone-100 py-6 text-center text-xs text-stone-400">
-        <span className="font-semibold text-navy">
-          36 <span className="text-family">Family</span>
-        </span>{" "}
-        · AI-generated responses · Not legal advice · Please do not sue us
+      <footer className="border-t border-white/10 py-6 text-center text-xs text-white/20">
+        <Image src="/36family-logo.png" alt="36 Family" width={80} height={24} className="h-5 w-auto mx-auto mb-2 opacity-30" />
+        AI-generated responses · Not legal advice · Please do not sue us
       </footer>
     </main>
   );
@@ -221,13 +215,17 @@ function SilkCard({
   return (
     <button
       onClick={onSelect}
-      className={`group relative flex flex-col items-center rounded-2xl p-3 sm:p-4 border-2 transition-all duration-150 cursor-pointer w-28 sm:w-36 ${
+      className={`group relative flex flex-col items-center rounded-2xl p-3 sm:p-4 border-2 transition-all duration-200 cursor-pointer w-28 sm:w-36 ${
         selected
-          ? "border-family bg-family/10 shadow-lg shadow-family/20"
-          : "border-transparent bg-stone-50 hover:border-family/50 hover:bg-family/5 hover:shadow-md"
+          ? "border-family bg-family/15 shadow-lg shadow-family/20"
+          : "border-white/10 bg-white/5 hover:border-family/50 hover:bg-white/10"
       }`}
     >
-      <div className="relative w-20 h-20 sm:w-28 sm:h-28 rounded-full overflow-hidden mb-3 ring-2 ring-transparent group-hover:ring-family/50 transition-all">
+      <div
+        className={`relative w-20 h-20 sm:w-28 sm:h-28 rounded-full overflow-hidden mb-3 ring-2 transition-all duration-200 ${
+          selected ? "ring-family" : "ring-white/10 group-hover:ring-family/50"
+        }`}
+      >
         <Image
           src={silk.photo}
           alt={silk.name}
@@ -236,23 +234,13 @@ function SilkCard({
           sizes="112px"
         />
       </div>
-      <span className="text-xs font-semibold text-navy text-center leading-tight">
+      <span className="text-xs font-semibold text-white/80 text-center leading-tight">
         {silk.name}
       </span>
       {selected && (
         <span className="absolute top-2 right-2 w-5 h-5 bg-family rounded-full flex items-center justify-center">
-          <svg
-            className="w-3 h-3 text-white"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-            strokeWidth={3}
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M5 13l4 4L19 7"
-            />
+          <svg className="w-3 h-3 text-navy" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
           </svg>
         </span>
       )}
