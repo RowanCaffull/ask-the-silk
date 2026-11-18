@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Ask the Silk | 36 Group Family",
+  title: "Ask the Silk | 36 Family",
   description: "Ask a question. Get a response. Definitely not legal advice.",
 };
 

@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Image from "next/image";
+import ReactMarkdown from "react-markdown";
 import { SILKS } from "@/lib/silks";
 
 export default function Home() {
@@ -44,97 +45,92 @@ export default function Home() {
     }
   }
 
+  // Split into rows: 3 then 2
+  const row1 = SILKS.filter((s) => s.photo).slice(0, 3);
+  const row2 = SILKS.filter((s) => s.photo).slice(3);
+
   return (
     <main className="min-h-screen bg-white">
       {/* Header */}
-      <header className="bg-navy text-white px-6 py-4 flex items-center justify-between">
-        <div className="flex items-center gap-3">
-          <span className="text-sm font-semibold tracking-widest uppercase text-family">
-            36 Group
+      <header className="bg-navy px-6 py-4 flex items-center justify-between">
+        <div className="flex items-center gap-2">
+          <span className="text-white font-bold text-xl tracking-tight">
+            36 <span className="text-family">Family</span>
           </span>
-          <span className="text-white/30">|</span>
-          <span className="text-sm text-white/70">Family Team</span>
         </div>
-        <span className="text-xs text-white/40 uppercase tracking-widest hidden sm:block">
+        <span className="text-white/40 text-xs uppercase tracking-widest hidden sm:block">
           Ask the Silk
         </span>
       </header>
 
-      <div className="max-w-3xl mx-auto px-6 py-12">
-        {/* Hero */}
-        <div className="mb-10 text-center">
-          <h1 className="text-4xl sm:text-5xl font-bold tracking-tight text-navy mb-3">
-            Ask the Silk
-          </h1>
-          <p className="text-stone-500 text-lg max-w-xl mx-auto leading-relaxed">
-            Got a question? Our KCs are standing by. Sort of.
-          </p>
+      {/* Hero banner */}
+      <div className="bg-gradient-to-br from-navy via-navy-light to-family py-12 px-6 text-center">
+        <h1 className="text-5xl sm:text-6xl font-bold text-white mb-3 tracking-tight">
+          Ask the Silk
+        </h1>
+        <p className="text-white/70 text-lg max-w-lg mx-auto">
+          Got a question? Our KCs are standing by.{" "}
+          <span className="italic">Sort of.</span>
+        </p>
+      </div>
 
-          {/* Disclaimer banner */}
-          <div className="mt-6 inline-flex items-start gap-2 bg-family/15 border border-family/40 rounded-xl px-5 py-3 text-sm text-navy/80 max-w-xl text-left">
-            <span className="text-family mt-0.5 text-base">⚠️</span>
-            <span>
-              <strong>Not legal advice. Not even close.</strong> This is a bit of fun for our
-              family seminar — each KC has been given a tongue-in-cheek persona
-              for comedy purposes. Nothing here reflects their actual views, and
-              none of it should influence any decision more important than what
-              to have for lunch.
-            </span>
-          </div>
+      <div className="max-w-3xl mx-auto px-6 py-10">
+        {/* Disclaimer */}
+        <div className="mb-10 flex items-start gap-3 bg-family/10 border border-family/30 rounded-2xl px-5 py-4 text-sm text-navy/80">
+          <span className="text-lg mt-0.5">⚠️</span>
+          <span>
+            <strong>Not legal advice. Not even close.</strong> This is a bit of
+            fun for our family seminar — each KC has been given a tongue-in-cheek
+            persona for comedy purposes. Nothing here reflects their actual views,
+            and none of it should influence any decision more important than what
+            to have for lunch.
+          </span>
         </div>
 
-        {/* Photo selector */}
+        {/* Photo selector — 3 then 2 */}
         <div className="mb-8">
-          <p className="text-sm font-semibold uppercase tracking-widest text-stone-400 mb-4 text-center">
+          <p className="text-sm font-semibold uppercase tracking-widest text-stone-400 mb-5 text-center">
             Choose your silk
           </p>
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-            {SILKS.filter((s) => s.photo).map((silk) => (
-              <button
+
+          {/* Row 1 — 3 people */}
+          <div className="flex justify-center gap-4 sm:gap-6 mb-4 sm:mb-6">
+            {row1.map((silk) => (
+              <SilkCard
                 key={silk.id}
-                onClick={() => {
+                silk={silk}
+                selected={selectedId === silk.id}
+                onSelect={() => {
                   setSelectedId(silk.id);
                   setResponse("");
                   setError("");
                 }}
-                className={`group relative flex flex-col items-center rounded-2xl p-3 border-2 transition-all duration-150 cursor-pointer ${
-                  selectedId === silk.id
-                    ? "border-family bg-family/10 shadow-md"
-                    : "border-transparent bg-stone-50 hover:border-family/50 hover:bg-family/5"
-                }`}
-              >
-                {/* Photo */}
-                <div className="relative w-20 h-20 sm:w-24 sm:h-24 rounded-full overflow-hidden mb-2 ring-2 ring-transparent group-hover:ring-family/50 transition-all">
-                  <Image
-                    src={silk.photo}
-                    alt={silk.name}
-                    fill
-                    className="object-cover object-top"
-                    sizes="96px"
-                  />
-                </div>
+              />
+            ))}
+          </div>
 
-                {/* Name */}
-                <span className="text-xs font-semibold text-navy text-center leading-tight">
-                  {silk.name}
-                </span>
-
-                {/* Selected tick */}
-                {selectedId === silk.id && (
-                  <span className="absolute top-2 right-2 w-5 h-5 bg-family rounded-full flex items-center justify-center">
-                    <svg className="w-3 h-3 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
-                    </svg>
-                  </span>
-                )}
-              </button>
+          {/* Row 2 — 2 people, centred */}
+          <div className="flex justify-center gap-4 sm:gap-6">
+            {row2.map((silk) => (
+              <SilkCard
+                key={silk.id}
+                silk={silk}
+                selected={selectedId === silk.id}
+                onSelect={() => {
+                  setSelectedId(silk.id);
+                  setResponse("");
+                  setError("");
+                }}
+              />
             ))}
           </div>
 
           {/* Persona description */}
           {selectedSilk && (
-            <div className="mt-4 bg-navy/5 border border-navy/10 rounded-xl px-5 py-3 text-sm text-navy/70 italic text-center">
-              <strong className="not-italic text-navy">{selectedSilk.name}:</strong>{" "}
+            <div className="mt-5 bg-navy/5 border border-navy/10 rounded-xl px-5 py-3 text-sm text-navy/70 italic text-center">
+              <strong className="not-italic text-navy">
+                {selectedSilk.name}:
+              </strong>{" "}
               {selectedSilk.persona}
             </div>
           )}
@@ -190,24 +186,76 @@ export default function Home() {
               </span>
               <div className="h-px flex-1 bg-stone-200" />
             </div>
-            <div className="bg-navy/3 border border-navy/10 rounded-2xl p-7">
-              <p className="text-navy/90 leading-relaxed whitespace-pre-wrap text-[1.05rem]">
-                {response}
-              </p>
+            <div className="bg-navy/[0.03] border border-navy/10 rounded-2xl p-7">
+              <div className="prose prose-navy max-w-none text-navy/90 prose-p:leading-relaxed prose-strong:text-navy prose-em:text-navy/80">
+                <ReactMarkdown>{response}</ReactMarkdown>
+              </div>
             </div>
-
-            {/* Second disclaimer at bottom of response */}
             <p className="mt-4 text-center text-xs text-stone-400 italic">
-              This response was generated by AI in a fictional persona. It is not legal advice and does not represent the views of {respondentName} or 36 Group.
+              AI-generated in a fictional persona. Not the actual views of{" "}
+              {respondentName} or 36 Family.
             </p>
           </div>
         )}
       </div>
 
       <footer className="mt-8 border-t border-stone-100 py-6 text-center text-xs text-stone-400">
-        <span className="text-family font-semibold">36 Group</span> Family Team Seminar ·{" "}
-        AI-generated responses · Not legal advice · Please do not sue us
+        <span className="font-semibold text-navy">
+          36 <span className="text-family">Family</span>
+        </span>{" "}
+        · AI-generated responses · Not legal advice · Please do not sue us
       </footer>
     </main>
+  );
+}
+
+function SilkCard({
+  silk,
+  selected,
+  onSelect,
+}: {
+  silk: { id: string; name: string; photo: string };
+  selected: boolean;
+  onSelect: () => void;
+}) {
+  return (
+    <button
+      onClick={onSelect}
+      className={`group relative flex flex-col items-center rounded-2xl p-3 sm:p-4 border-2 transition-all duration-150 cursor-pointer w-28 sm:w-36 ${
+        selected
+          ? "border-family bg-family/10 shadow-lg shadow-family/20"
+          : "border-transparent bg-stone-50 hover:border-family/50 hover:bg-family/5 hover:shadow-md"
+      }`}
+    >
+      <div className="relative w-20 h-20 sm:w-28 sm:h-28 rounded-full overflow-hidden mb-3 ring-2 ring-transparent group-hover:ring-family/50 transition-all">
+        <Image
+          src={silk.photo}
+          alt={silk.name}
+          fill
+          className="object-cover object-top"
+          sizes="112px"
+        />
+      </div>
+      <span className="text-xs font-semibold text-navy text-center leading-tight">
+        {silk.name}
+      </span>
+      {selected && (
+        <span className="absolute top-2 right-2 w-5 h-5 bg-family rounded-full flex items-center justify-center">
+          <svg
+            className="w-3 h-3 text-white"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            strokeWidth={3}
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M5 13l4 4L19 7"
+            />
+          </svg>
+        </span>
+      )}
+    </button>
   );
 }
