@@ -57,14 +57,14 @@ export default function Home() {
           className="h-8 w-auto"
         />
         <span className="text-white/30 text-xs uppercase tracking-widest hidden sm:block">
-          Family Seminar 2024
+          Family Seminar 2027
         </span>
       </header>
 
       {/* Hero */}
       <div className="text-center px-6 pt-14 pb-10">
         <div className="inline-block mb-4 px-4 py-1.5 rounded-full border border-family/40 bg-family/10 text-family text-xs font-semibold uppercase tracking-widest">
-          Family Seminar · Interactive
+          2027 36 Family Seminar
         </div>
         <h1 className="text-5xl sm:text-7xl font-bold text-white mb-4 tracking-tight">
           Ask the Silk
