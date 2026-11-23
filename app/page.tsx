@@ -42,7 +42,7 @@ export default function Home() {
   }
 
   const row1 = SILKS.filter((s) => s.photo).slice(0, 3);
-  const row2 = SILKS.filter((s) => s.photo).slice(3);
+  const row2 = SILKS.filter((s) => s.photo).slice(3, 6);
 
   return (
     <main className="min-h-screen" style={{ background: "linear-gradient(160deg, #0f1f4a 0%, #1b357a 50%, #0f1f4a 100%)" }}>
@@ -106,7 +106,7 @@ export default function Home() {
             ))}
           </div>
 
-          {/* Row 2 — 2 people centred */}
+          {/* Row 2 — 3 people */}
           <div className="flex justify-center gap-4 sm:gap-8">
             {row2.map((silk) => (
               <SilkCard
